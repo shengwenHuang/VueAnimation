@@ -1,6 +1,3 @@
-# PAGES
+This project plays around with animation built with Vue.js.
 
-This directory contains your Application Views and Routes.
-The framework reads all the `*.vue` files inside this directory and creates the router of your application.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/guide/routing).
+Planet Animation Page shows the movement of Sun, Earth, and Moon.
