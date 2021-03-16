@@ -7,6 +7,9 @@
         <nuxt-link class="button--green" to="earth/"
           >Planet Animation</nuxt-link
         >
+        <nuxt-link class="button--green" to="mouseFollow/"
+          >Mouse Following Animation</nuxt-link
+        >
         <!-- <a
           href="https://nuxtjs.org/"
           target="_blank"
