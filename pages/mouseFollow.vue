@@ -1,13 +1,17 @@
 <template>
   <div class="container">
     <head>
+      <div class="links">
+        <nuxt-link class="button--green" to="/">Back</nuxt-link>
+      </div>
       <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-      <title>Document</title>
+      <title>The Eyes</title>
     </head>
     <body>
-      <canvas id="canvas"></canvas>
+      <div class="box">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
     </body>
   </div>
 </template>
@@ -15,133 +19,65 @@
 <script>
 export default {
   data() {
-    return {
-      sun: undefined,
-      moon: undefined,
-      earth: undefined,
-    }
+    return {}
   },
 
   watch: {},
   mounted() {
-    let cn
-    //= document.getElementById('cw');
-    let c
-    // const u = 10
-    const m = {
-      x: innerWidth / 2,
-      y: innerHeight / 2,
-    }
-    window.onmousemove = function (e) {
-      m.x = e.clientX
-      m.y = e.clientY
-    }
-    function gc() {
-      const s = '0123456789ABCDEF'
-      let c = '#'
-      for (let i = 0; i < 6; i++) {
-        c += s[Math.ceil(Math.random() * 15)]
-      }
-      return c
-    }
-    const a = []
-    window.onload = function myfunction() {
-      cn = document.getElementById('canvas')
-      c = cn.getContext('2d')
-
-      for (let i = 0; i < 10; i++) {
-        // const r = 30
-        // const x = Math.random() * (innerWidth - 2 * r) + r
-        // const y = Math.random() * (innerHeight - 2 * r) + r
-        const t = new Ob(
-          innerWidth / 2,
-          innerHeight / 2,
-          5,
-          'red',
-          Math.random() * 200 + 20,
-          2
-        )
-        a.push(t)
-      }
-      // cn.style.backgroundColor = "#700bc8";
-
-      c.lineWidth = '2'
-      c.globalAlpha = 0.5
-      resize()
-      anim()
-    }
-    window.onresize = function () {
-      resize()
-    }
-    function resize() {
-      cn.height = innerHeight
-      cn.width = innerWidth
-      for (let i = 0; i < 101; i++) {
-        // const r = 30
-        // const x = Math.random() * (innerWidth - 2 * r) + r
-        // const y = Math.random() * (innerHeight - 2 * r) + r
-        a[i] = new Ob(
-          innerWidth / 2,
-          innerHeight / 2,
-          4,
-          gc(),
-          Math.random() * 200 + 20,
-          0.02
-        )
-      }
-      //  a[0] = new ob(innerWidth / 2, innerHeight / 2, 40, "red", 0.05, 0.05);
-      // a[0].dr();
-    }
-    function Ob(x, y, r, cc, o, s) {
-      this.x = x
-      this.y = y
-      this.r = r
-      this.cc = cc
-      this.theta = Math.random() * Math.PI * 2
-      this.s = s
-      this.o = o
-      this.t = Math.random() * 150
-
-      this.o = o
-      this.dr = function () {
-        const ls = {
-          x: this.x,
-          y: this.y,
-        }
-        this.theta += this.s
-        this.x = m.x + Math.cos(this.theta) * this.t
-        this.y = m.y + Math.sin(this.theta) * this.t
-        c.beginPath()
-        c.lineWidth = this.r
-        c.strokeStyle = this.cc
-        c.moveTo(ls.x, ls.y)
-        c.lineTo(this.x, this.y)
-        c.stroke()
-        c.closePath()
-      }
-    }
-    function anim() {
-      requestAnimationFrame(anim)
-      c.fillStyle = 'rgba(0,0,0,0.05)'
-      c.fillRect(0, 0, cn.width, cn.height)
-      a.forEach(function (e, i) {
-        e.dr()
-      })
-    }
+    document.querySelector('body').addEventListener('mousemove', this.eyeball)
   },
-  methods: {},
+  methods: {
+    eyeball() {
+      const eye = document.querySelectorAll('.eye')
+      eye.forEach(function (eye) {
+        const x = eye.getBoundingClientRect().left + eye.clientWidth / 2
+        const y = eye.getBoundingClientRect().top + eye.clientHeight / 2
+        const radian = Math.atan2(event.pageX - x, event.pageY - y)
+        const rotation = radian * (180 / Math.PI) * -1 + 270
+        eye.style.transform = 'rotate(' + rotation + 'deg)'
+      })
+    },
+  },
 }
 </script>
 
 <style>
-#canvas {
-  position: fixed;
-  z-index: -1;
-}
-
-body {
+/* * {
   margin: 0;
   padding: 0;
-  background-color: rgba(0, 0, 0, 0.05);
 }
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: radial-gradient(#f2761e, #ef4921);
+}
+.box {
+  display: flex;
+}
+.box .eye {
+  position: relative;
+  widows: 120px;
+  height: 120px;
+  display: block;
+  background: #fff;
+  margin: 0 20px;
+  border-radius: 50%;
+  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.2), inset 0 0 15px #f2761e,
+    inset 0 0 25px #f2761e;
+}
+.box .eye::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 35px;
+  transform: translate(-50%, -50%);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: #000;
+  border: 10px solid #2196f3;
+  box-sizing: border-box;
+} */
 </style>
