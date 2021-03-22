@@ -1,83 +1,112 @@
 <template>
   <div class="container">
-    <head>
-      <div class="links">
-        <nuxt-link class="button--green" to="/">Back</nuxt-link>
-      </div>
-      <meta charset="UTF-8" />
-      <title>The Eyes</title>
-    </head>
-    <body>
-      <div class="box">
-        <div class="eye"></div>
-        <div class="eye"></div>
-      </div>
-    </body>
+    <canvas
+      id="canvas"
+      width="600"
+      height="300"
+      style="border: 1px solid black"
+    ></canvas>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {}
+    return {
+      running: false,
+      ball: {
+        x: 0,
+        y: 0,
+        vx: 5,
+        vy: 1,
+        radius: 25,
+        color: 'black',
+      },
+    }
   },
 
-  watch: {},
+  watch: {
+    // ball: {
+    //   deep: true,
+    //   handler() {
+    //     if (!this.running) {
+    //       this.drawBall()
+    //     }
+    //   },
+    // },
+  },
   mounted() {
-    document.querySelector('body').addEventListener('mousemove', this.eyeball)
+    this.canvas = document.getElementById('canvas')
+    this.ctx = this.canvas.getContext('2d')
+    const vm = this
+
+    this.canvas.addEventListener('mousemove', function (e) {
+      if (!vm.running) {
+        vm.clear()
+        vm.ball.x = e.offsetX
+        vm.ball.y = e.offsetY
+        vm.drawBall()
+      }
+    })
+
+    this.canvas.addEventListener('click', function (e) {
+      // vm.raf = window.requestAnimationFrame(vm.draw)
+      if (!vm.running) {
+        vm.raf = window.requestAnimationFrame(vm.draw)
+        vm.running = true
+      }
+    })
+
+    this.canvas.addEventListener('mouseout', function (e) {
+      window.cancelAnimationFrame(vm.raf)
+      vm.running = false
+    })
+
+    this.drawBall()
   },
   methods: {
-    eyeball() {
-      const eye = document.querySelectorAll('.eye')
-      eye.forEach(function (eye) {
-        const x = eye.getBoundingClientRect().left + eye.clientWidth / 2
-        const y = eye.getBoundingClientRect().top + eye.clientHeight / 2
-        const radian = Math.atan2(event.pageX - x, event.pageY - y)
-        const rotation = radian * (180 / Math.PI) * -1 + 270
-        eye.style.transform = 'rotate(' + rotation + 'deg)'
-      })
+    clear() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    },
+    draw() {
+      this.clear()
+      this.drawBall()
+      this.ball.x += this.ball.vx
+      this.ball.y += this.ball.vy
+
+      if (
+        this.ball.y + this.ball.vy > this.canvas.height ||
+        this.ball.y + this.ball.vy < 0
+      ) {
+        this.ball.vy = -this.ball.vy
+      }
+      if (
+        this.ball.x + this.ball.vx > this.canvas.width ||
+        this.ball.x + this.ball.vx < 0
+      ) {
+        this.ball.vx = -this.ball.vx
+      }
+
+      this.raf = window.requestAnimationFrame(this.draw)
+    },
+    drawBall() {
+      this.ctx.beginPath()
+      // console.log('ddd', this.ball.x, this.ball.y)
+      this.ctx.arc(
+        this.ball.x,
+        this.ball.y,
+        this.ball.radius,
+        0,
+        Math.PI * 2,
+        true
+      )
+      this.ctx.closePath()
+      this.ctx.fillStyle = this.ball.color
+      this.ctx.fill()
+      // console.log('drawb')
     },
   },
 }
 </script>
 
-<style>
-/* * {
-  margin: 0;
-  padding: 0;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: radial-gradient(#f2761e, #ef4921);
-}
-.box {
-  display: flex;
-}
-.box .eye {
-  position: relative;
-  widows: 120px;
-  height: 120px;
-  display: block;
-  background: #fff;
-  margin: 0 20px;
-  border-radius: 50%;
-  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.2), inset 0 0 15px #f2761e,
-    inset 0 0 25px #f2761e;
-}
-.box .eye::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 35px;
-  transform: translate(-50%, -50%);
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: #000;
-  border: 10px solid #2196f3;
-  box-sizing: border-box;
-} */
-</style>
+<style></style>

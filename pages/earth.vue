@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div>
-      <div class="links">
+      <!-- <div class="links">
         <nuxt-link class="button--green" to="/">Back</nuxt-link>
-      </div>
+      </div> -->
       <b-card
         title="Planet Animation"
         sub-title="Movement of Sun Earth and Moon"
