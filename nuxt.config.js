@@ -62,6 +62,7 @@ export default {
             fix: true
           }
         })
-    }
+    },
+    transpile: ['gsap'],
   },
 }

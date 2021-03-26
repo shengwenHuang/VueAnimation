@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div>
-      <Logo />
+      <div class="bubble-wrapper">
+        <b-img ref="bubble" center class="bubble-image" src="logo.png" />
+      </div>
       <h1 class="title">Vue Animation</h1>
       <div class="links">
         <nuxt-link class="button--green" to="earth/"
@@ -10,29 +12,34 @@
         <nuxt-link class="button--green" to="mouseFollow/"
           >Mouse Following Animation</nuxt-link
         >
-        <!-- <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a> -->
-        <!-- <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {}
+import { gsap } from 'gsap'
+export default {
+  data() {
+    return {}
+  },
+
+  mounted() {
+    const { bubble } = this.$refs
+    const timeline = gsap.timeline()
+
+    timeline.to(bubble, 0.4, {
+      scale: 0.8,
+      rotation: 16,
+      ease: 'back.out(1.7)',
+    })
+    timeline.to(bubble, 1.2, {
+      scale: 1,
+      rotation: '-=16',
+      ease: 'elastic.out(2.5, 0.5)',
+    })
+  },
+}
 </script>
 
 <style>
@@ -65,5 +72,41 @@ export default {}
 
 .links {
   padding-top: 15px;
+}
+
+.bubble-wrapper {
+  position: relative;
+}
+
+.bubble {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(12, 105, 17);
+  background: #272727;
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+}
+
+.bubble-pulse {
+  position: absolute;
+  z-index: 2;
+  height: 120px;
+  width: 120px;
+  top: 50%;
+  left: 50%;
+  margin-top: -60px;
+  margin-left: -60px;
+  background: #272727;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0);
+}
+
+.bubble-image {
+  height: 50%;
 }
 </style>

@@ -25,16 +25,7 @@ export default {
     }
   },
 
-  watch: {
-    // ball: {
-    //   deep: true,
-    //   handler() {
-    //     if (!this.running) {
-    //       this.drawBall()
-    //     }
-    //   },
-    // },
-  },
+  watch: {},
   mounted() {
     this.canvas = document.getElementById('canvas')
     this.ctx = this.canvas.getContext('2d')
